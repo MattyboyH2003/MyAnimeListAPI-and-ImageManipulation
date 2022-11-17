@@ -4,18 +4,16 @@ from MyAnimeListAPI import GetAnimeInfo, GetAnimeList, Date
 animeList = GetAnimeList.GetFull("mattyboyh2003")
 
 # Filter out complete or dropped animes
-animeList = [anime for anime in animeList if anime["list_status"]["status"] != "completed" and anime["list_status"]["status"] != "dropped"]
-
+animeList = [anime for anime in animeList if anime["list_status"]["status"] == "watching" or anime["list_status"]["status"] == "on_hold"]
 
 # Filter for the remaining anime
-checkLambda = lambda a : GetAnimeInfo(a)["status"] == "currently_airing" or GetAnimeInfo(a)["status"] == "not_yet_aired"
-
+checkLambda = lambda a : GetAnimeInfo(a)["status"] == "currently_airing" #or GetAnimeInfo(a)["status"] == "not_yet_aired"
 
 # List of detailed anime info with all irrelevant anime filtered out
 filteredList = [GetAnimeInfo(anime["node"]["id"]) for anime in animeList if checkLambda(anime["node"]["id"])]
 
 # Add forced anime that aren't picked up in the innitial full list request
-forcedAnime = [50709]
+forcedAnime = []
 filteredList += [GetAnimeInfo(anime, refresh = True) for anime in forcedAnime if checkLambda(anime)]
 
 
@@ -53,7 +51,7 @@ for anime in list(animeDetails.keys()):
     broadcastTime = animeDetails[anime]["broadcast"]["start_time"]
 
     date = Date(broadcastDay, broadcastTime)
-    date.changeTimeZone("+1")
+    date.changeTimeZone("0")
 
     animeByDays[DAYSMAP[date.GetDay()]].append([anime, date.GetTime(), animeDetails[anime]["status"]])
 

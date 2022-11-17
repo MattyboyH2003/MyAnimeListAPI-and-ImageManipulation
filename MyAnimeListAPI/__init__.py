@@ -27,6 +27,7 @@ with open(f"{_DATAPATH}/me.json", "r") as file:
 class GetAnimeList:
     @staticmethod
     def base(username):
+        username = username.lower()
         endpoint = f"/users/{username}/animelist"
         animeList = []
         offset = 0
@@ -49,6 +50,7 @@ class GetAnimeList:
     
     @staticmethod
     def GetFull(username, refresh = False, save = True):
+        username = username.lower()
         if not refresh:
             cached, cachedData = CheckCache(username, "GetFull.json")
 
@@ -69,6 +71,7 @@ class GetAnimeList:
 
     @staticmethod
     def GetWatching(username, refresh = False, save = True):
+        username = username.lower()
         if not refresh:
             cached, cachedData = CheckCache(username, "GetWatching.json")
 
@@ -90,6 +93,7 @@ class GetAnimeList:
 
     @staticmethod
     def GetDetailed(username, refresh = False, save = True):
+        username = username.lower()
         if not refresh:
             cached, cachedData = CheckCache(username, "GetDetailed.json")
 
@@ -233,7 +237,7 @@ def SaveResult(data, fileName = "DefaultSave.json", saveType = "Replace"):
 
 def SendRequest(endpoint = "", fields = {}, headers = {}, URLOveride = None, resultType = "JSON"):
 
-    print(f"Sending request to {endpoint}\n fields: {fields}\n headers: {headers}\n")
+    #print(f"Sending request to {endpoint}\n fields: {fields}\n headers: {headers}\n")
 
     if URLOveride:
         print(f"Sending request to {URLOveride}\n fields: {fields}\n")
@@ -251,7 +255,7 @@ def SendRequest(endpoint = "", fields = {}, headers = {}, URLOveride = None, res
         return response
     else:
         print(response.status)
-        #print(response.data)
+        print(response.data)
 
         exit()
 
